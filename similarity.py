@@ -3,6 +3,9 @@ from PIL import Image
 
 
 class CompareImage(object):
+    def __init__(self):
+        self.path1 = (145, 334, 691, 685)
+        self.path2 = (810, 263, 960, 670)
 
     def calculate(self, image1, image2):
         g = image1.histogram()
@@ -34,9 +37,11 @@ class CompareImage(object):
 
         return sub_image_list
 
-    def compare_image(self, file_image1, file_image2, size=(256, 256), part_size=(64, 64)):
+    def compare_image(self, file_image1, file_image2, path, size=(256, 256), part_size=(64, 64)):
         image1 = Image.open(file_image1)
+        image1 = image1.crop(path)
         image2 = Image.open(file_image2)
+        image2 = image2.crop(path)
 
         img1 = image1.resize(size).convert("RGB")
         sub_image1 = self.split_image(img1, part_size)
@@ -52,10 +57,10 @@ class CompareImage(object):
         y = size[1] / part_size[1]
 
         pre = round((sub_data / (x * y)), 6)
-        # print(str(pre * 100) + '%')
+        print(str(pre * 100) + '%')
         # print('Compare the image result is: ' + str(pre))
-        return pre
+        # return pre
 
 
-# compare_image = CompareImage()
-# compare_image.compare_image("./img/15.jpg", "./img/16.jpg")
+compare_image = CompareImage()
+compare_image.compare_image("./img/2.1.jpg", "./img/2.3.jpg", compare_image.path2)
